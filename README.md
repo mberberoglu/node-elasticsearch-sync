@@ -1,4 +1,4 @@
-# node-elasticsearch-sync [![Build Status](https://travis-ci.org/toystars/node-elasticsearch-sync.svg?branch=master)](https://travis-ci.org/toystars/node-elasticsearch-sync) [![Coverage Status](https://coveralls.io/repos/github/toystars/node-elasticsearch-sync/badge.svg?branch=master)](https://coveralls.io/github/toystars/node-elasticsearch-sync?branch=master)
+# node-elasticsearch-sync [![Build Status](https://travis-ci.org/mberberoglu/node-elasticsearch-sync.svg?branch=master)](https://travis-ci.org/mberberoglu/node-elasticsearch-sync) [![Coverage Status](https://coveralls.io/repos/github/mberberoglu/node-elasticsearch-sync/badge.svg?branch=master)](https://coveralls.io/github/mberberoglu/node-elasticsearch-sync?branch=master)
 ElasticSearch and MongoDB sync module for node without environment variables
 
 
@@ -187,7 +187,7 @@ ESMongoSync.addWatchers(watchersArray);
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via Pull Requests on [Github](https://github.com/toystars/node-elasticsearch-sync).
+We accept contributions via Pull Requests on [Github](https://github.com/mberberoglu/node-elasticsearch-sync).
 
 
 ### Pull Requests
@@ -211,6 +211,7 @@ Check issues for current issues.
 
 - [Mustapha Babatunde](https://twitter.com/iAmToystars)
 - [Andy Collins](https://github.com/andymcollins)
+- [Mustafa Berberoglu](https://github.com/mberberoglu)
 
 ## License
 
