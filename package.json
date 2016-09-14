@@ -1,7 +1,7 @@
 {
   "name": "node-elasticsearch-sync",
   "version": "1.0.0",
-  "description": "ElasticSearch and MongoDB sync module for node",
+  "description": "ElasticSearch and MongoDB sync module for node without environment variables",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toystars/node-elasticsearch-sync.git"
+    "url": "git+https://github.com/mberberoglu/node-elasticsearch-sync.git"
   },
   "keywords": [
     "Elastic",
@@ -20,11 +20,15 @@
     "Elastic"
   ],
   "author": "Mustapha Babatunde <toystars2008@gmail.com> (http://bmustapha.com)",
+  "contributors": [
+    "Andy Collins (https://github.com/andymcollins)",
+    "Mustafa Berberoglu <mustafaberberoglu@gmail.com> (http://mustafab.net)"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/toystars/node-elasticsearch-sync/issues"
+    "url": "https://github.com/mberberoglu/node-elasticsearch-sync/issues"
   },
-  "homepage": "https://github.com/toystars/node-elasticsearch-sync#readme",
+  "homepage": "https://github.com/mberberoglu/node-elasticsearch-sync#readme",
   "engines": {
     "node": ">=4.2.4"
   },

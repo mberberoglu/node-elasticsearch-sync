@@ -1,5 +1,5 @@
 # node-elasticsearch-sync [![Build Status](https://travis-ci.org/toystars/node-elasticsearch-sync.svg?branch=master)](https://travis-ci.org/toystars/node-elasticsearch-sync) [![Coverage Status](https://coveralls.io/repos/github/toystars/node-elasticsearch-sync/badge.svg?branch=master)](https://coveralls.io/github/toystars/node-elasticsearch-sync?branch=master)
-ElasticSearch and MongoDB sync module for node
+ElasticSearch and MongoDB sync module for node without environment variables
 
 
 ## What does it do?
@@ -9,12 +9,11 @@ Please note that a replica set is needed for the package to tail mongoDB.
 
 ## How to use
 ```bash
-$ npm install node-elasticsearch-sync --save
+$ npm install mberberoglu/node-elasticsearch-sync --save
 ```
 
 
 ## Sample usage (version >= 1.0.0)
-After adding package to node app. Only ENV_VARs can be used as errors will be thrown if all required ENV_VARs are not defined.
 
 ```javascript
 
@@ -35,19 +34,21 @@ let sampleWatcher = {
   priority: 0
 };
 
-// the "collectionName" and "type" fields in watchers MUST be the same. This might change in later versions. 
+// the "collectionName" and "type" fields in watchers MUST be the same. This might change in later versions.
 
 let watcherArray = [];
 watcherArray.push(sampleWatcher);
 
-// The following env_vars are to be defined. Error will be thrown if any of the env_var is not defined 
-export MONGO_OPLOG_URL="mongodb://127.0.0.1:27017/local" // mongoDB url where data will be pulled from
-export MONGO_DATA_URL="mongodb://127.0.0.1:27017/db-name" // mongoDB oplog url which is the local DB of replica-set
-export ELASTIC_SEARCH_URL="localhost:9200" // ElasticSearch cluster url
-export BATCH_COUNT = 100; // Number of documents to be indexed in a single batch indexing
+let config = {
+  mongo: {
+		data: "mongodb://127.0.0.1:27017/db-name", // mongoDB url where data will be pulled from
+		oplog: "mongodb://127.0.0.1:27017/oplog", // mongoDB oplog url which is the local DB of replica-set
+		batch: 1000 // Number of documents to be indexed in a single batch indexing
+	},
+	elastic: "localhost:9200" // ElasticSearch cluster url
+}
 
-
-ESMongoSync.init(watcherArray, null);
+ESMongoSync.init(config, watcherArray, null);
 
 
 /*
@@ -58,7 +59,7 @@ ESMongoSync.init(watcherArray, null);
  *    If null is passed, then node-elasticsearch-sync will create and maintain its own internal elasticsearch object and uses that for data pull and real-tim sync.
  *    It is recommended that "null" is passed if the above explanation is not elaborate enough...
  */
- 
+
 
 ```
 
@@ -71,7 +72,7 @@ Below is more info about sample watcher:
 
 ```javascript
 let sampleWatcher = {
-  collectionName: 'users', 
+  collectionName: 'users',
   index: 'person',
   type: 'users',
   transformFunction: transformFunction,
@@ -102,13 +103,13 @@ If you have a cron-job that runs at specific intervals and you need to reindex d
 This can also come in handy if there is an ElasticSearch mappings change and there is a need to reindex data. It should be noted that calling reIndex overwrites previously stored data in ElasticSearch cluster. It also doesn't take into consideration the size of documents to reindex and ElasticSearch cluster specs.
 
 ```javascript
- 
+
 ESMongoSync.reIndex();
 
 ```
 
 
-#### MongoDB and Oplog connection destruction 
+#### MongoDB and Oplog connection destruction
 
 If for any reason there is a need to disconnect from MongoDB and MongoDB Oplog, then the `destroy` or `disconnect` functions handle that.
 
@@ -144,74 +145,11 @@ ESMongoSync.addWatchers(watchersArray);
 
 ```
 
-
-## Sample usage (version <= 1.0.0)
-After adding package to node app
-
-```javascript
-
-var ESMongoSync = require('node-elasticsearch-sync');
-
-// initialize package as below
-
-let finalCallBack = function () {
-  // whatever code to run after package init
-  .
-  .
-}
-
-let transformFunction = function (watcher, document, callBack) {
-  document.name = document.firstName + ' ' + document.lastName;
-  callBack(document);
-}
-
-let sampleWatcher = {
-  collectionName: 'users',
-  index: 'person',
-  type: 'users',
-  transformFunction: transformFunction,
-  fetchExistingDocuments: true,
-  priority: 0
-};
-
-let watcherArray = [];
-watcherArray.push(sampleWatcher);
-
-let batchCount = 500;
-
-ESMongoSync.init('MONGO_URL', 'ELASTIC_SEARCH_URL', finalCallBack, watcherArray, batchCount);
-
-```
-
-## Using environment variables
-While it is possible to supply mongoDB and elastic search cluster URLs as parameters in the init() method, it is best to define them as environment variables
-MongoDB url should be defined as: process.env.SEARCH_MONGO_URL, while Elastic search cluster url: process.env.SEARCH_ELASTIC_URL
-Supplying the URLs as environments variables, the init method can be called like so:
-
-```javasript
-ESMongoSync.init(null, 'null, finalCallBack, watcherArray, batchCount);
-```
-
-## More usage info
-
-The elasticsearch-sync package tries as much as possible to handle most heavy lifting, but certain checks has to be put in place, and that can be seen from the init function above. The ESMongoSync.init() takes five parameters:
-
-- **MongoDB URL** - MongoDB database to tail and pull data from.
-
-- **ElasticSearch URL** - URL to a running ElasticSearch cluster.
-
-- **CallBack Function** - Function to execute after initial package setup is successful (can be null).
-
-- **Watchers** - Array of watcher objects to signify which collection to tail and receive real-time update for.
-
-- **Batch Count** - An integer that specifies number of documents to send to ElasticSearch in batches. (can be set to very high number. defaults to 100)
-
-
 Below is more info about sample watcher:
 
 ```javascript
 let sampleWatcher = {
-  collectionName: 'users', 
+  collectionName: 'users',
   index: 'person',
   type: 'users',
   transformFunction: transformFunction,
@@ -243,11 +181,6 @@ ESMongoSync.addWatchers(watchersArray);
 // note that existing documents won't be pulled for the new watcher, but oplog activities will be tailed in real time.
 
 ```
-
-
-## Sample init:
-
-Still confused? Get inspired by this [Sample Setup](SAMPLE.js)
 
 
 ## Contributing
